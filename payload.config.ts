@@ -1,5 +1,5 @@
 import path from 'path'
-// import { postgresAdapter } from '@payloadcms/db-postgres'
+import { postgresAdapter } from '@payloadcms/db-postgres'
 import { en } from 'payload/i18n/en'
 import {
   AlignFeature,
@@ -19,7 +19,7 @@ import {
   UnorderedListFeature,
   UploadFeature,
 } from '@payloadcms/richtext-lexical'
-import { mongooseAdapter } from '@payloadcms/db-mongodb'
+// import { mongooseAdapter } from '@payloadcms/db-mongodb'
 import { buildConfig } from 'payload'
 import sharp from 'sharp'
 import { fileURLToPath } from 'url'
@@ -66,19 +66,35 @@ export default buildConfig({
         },
       ],
     },
+    {
+      slug: 'SpringbokEmails',
+      admin: {
+        useAsTitle: 'Springbok emails',
+      },
+      fields: [
+        {
+          name: 'title',
+          type: 'text',
+        },
+        {
+          name: 'content',
+          type: 'richText',
+        },
+      ],
+    },
   ],
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
   },
-  // db: postgresAdapter({
-  //   pool: {
-  //     connectionString: process.env.POSTGRES_URI || ''
-  //   }
-  // }),
-  db: mongooseAdapter({
-    url: process.env.MONGODB_URI || '',
+  db: postgresAdapter({
+    pool: {
+      connectionString: process.env.POSTGRES_URI || '',
+    },
   }),
+  // db: mongooseAdapter({
+  //   url: process.env.MONGODB_URI || '',
+  // }),
 
   /**
    * Payload can now accept specific translations from 'payload/i18n/en'
@@ -90,8 +106,8 @@ export default buildConfig({
 
   admin: {
     autoLogin: {
-      email: 'dev@payloadcms.com',
-      password: 'test',
+      email: 'sander.wilbrink@springbokagency.com',
+      password: '',
       prefillOnly: true,
     },
   },
@@ -105,8 +121,8 @@ export default buildConfig({
       await payload.create({
         collection: 'users',
         data: {
-          email: 'dev@payloadcms.com',
-          password: 'test',
+          email: 'sander.wilbrink@springbokagency.com',
+          password: '',
         },
       })
     }
